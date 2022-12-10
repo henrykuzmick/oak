@@ -1,15 +1,11 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
 
-import { trpc } from "../utils/trpc";
+import { trpc } from "../../utils/trpc";
 
-const Home: NextPage = () => {
+const Spaces: NextPage = () => {
   const memberships = trpc.memberships.getAll.useQuery();
-
-  console.log({ memberships });
-  const onCreateSpace = () => {};
 
   return (
     <>
@@ -19,7 +15,7 @@ const Home: NextPage = () => {
         <link rel="icon" href="/favicon.ico" />
       </Head>
       <main>
-        <div>Organizations</div>
+        <div>Spaces</div>
         <div>
           <ul>
             {memberships.data?.map((mem) => (
@@ -36,4 +32,4 @@ const Home: NextPage = () => {
   );
 };
 
-export default Home;
+export default Spaces;
