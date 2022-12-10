@@ -1,7 +1,7 @@
 import { type NextPage } from "next";
+import { useRouter } from "next/router";
 import Head from "next/head";
 import Link from "next/link";
-import { useRouter } from "next/router";
 
 import { trpc } from "../../utils/trpc";
 
@@ -29,7 +29,7 @@ const Spaces: NextPage = () => {
         <div>
           <ul>
             {spaces.data?.map((space) => (
-              <li>
+              <li key={space.id}>
                 <Link
                   href={{
                     pathname: `spaces/${space.slug}`,

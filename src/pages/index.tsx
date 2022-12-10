@@ -1,7 +1,6 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
 
 import { trpc } from "../utils/trpc";
 
@@ -9,7 +8,6 @@ const Home: NextPage = () => {
   const memberships = trpc.memberships.getAll.useQuery();
 
   console.log({ memberships });
-  const onCreateSpace = () => {};
 
   return (
     <>
@@ -23,7 +21,7 @@ const Home: NextPage = () => {
         <div>
           <ul>
             {memberships.data?.map((mem) => (
-              <li>
+              <li key={mem.id}>
                 <Link href={`/${mem.organization.slug}/spaces`}>
                   {mem.organization.name}
                 </Link>
