@@ -6,6 +6,13 @@ import { trpc } from "../../utils/trpc";
 
 const Spaces: NextPage = () => {
   const memberships = trpc.memberships.getAll.useQuery();
+  const create = trpc.spaces.create.useMutation();
+
+  const onClickCreateSpace = () => {
+    create.mutate({
+      name: "Hello new space",
+    });
+  };
 
   return (
     <>
@@ -16,6 +23,7 @@ const Spaces: NextPage = () => {
       </Head>
       <main>
         <div>Spaces</div>
+        <button onClick={onClickCreateSpace}>Create Space</button>
         <div>
           <ul>
             {memberships.data?.map((mem) => (

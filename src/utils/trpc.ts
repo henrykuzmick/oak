@@ -25,7 +25,7 @@ export const trpc = createTRPCNext<AppRouter>({
           url: `${getBaseUrl()}/api/trpc`,
           headers() {
             return {
-              Organization: "personal-0.6638427120528752",
+              Organization: "personal-0.5601944874692417",
             };
           },
         }),

@@ -1,22 +1,29 @@
 import { z } from "zod";
-import { router, protectedProcedure } from "../trpc";
+import { router, orgProcedure } from "../trpc";
 
 export const spacesRouter = router({
-  getAll: protectedProcedure.query(({ ctx }) => {
-    return ctx.prisma.space.findMany();
+  getAll: orgProcedure.query(({ ctx }) => {
+    return ctx.prisma.space.findMany({
+      where: {
+        organizationId: ctx.organizationId,
+      },
+    });
   }),
-  // create: publicProcedure
-  //   .input(
-  //     z.object({
-  //       name: z.string(),
-  //     })
-  //   )
-  //   .mutation(({ ctx, input }) => {
-  //     ctx.prisma.space.create({
-  //       data: {
-  //         name: input.name,
-  //         slug: "dfsd",
-  //       },
-  //     });
-  //   }),
+  create: orgProcedure
+    .input(
+      z.object({
+        name: z.string(),
+      })
+    )
+    .mutation(async ({ ctx, input }) => {
+      const res = await ctx.prisma.space.create({
+        data: {
+          organizationId: ctx.organizationId,
+          name: input.name,
+          slug: "dfsd",
+        },
+      });
+
+      return res;
+    }),
 });

@@ -34,55 +34,56 @@ const isAuthed = t.middleware(({ ctx, next, ...rest }) => {
   });
 });
 
-const isAuthedWithOrganization = t.middleware(
-  async ({ ctx, next, ...rest }) => {
-    if (!ctx.session || !ctx.session.user) {
-      throw new TRPCError({ code: "UNAUTHORIZED" });
-    }
+const isAuthedWithOrganization = t.middleware(async ({ ctx, next }) => {
+  if (!ctx.session || !ctx.session.user) {
+    throw new TRPCError({ code: "UNAUTHORIZED" });
+  }
 
-    if (!ctx.organization) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "No Organization Selected",
-      });
-    }
+  console.log("CONTEXT:");
+  console.log(ctx.organizationSlug);
 
-    const organization = await ctx.prisma.organization.findUnique({
-      where: {
-        slug: ctx.organization,
-      },
-      include: {
-        memberships: true,
-      },
-    });
-
-    if (!organization) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "Invalid Organization",
-      });
-    }
-
-    const validMembership = organization.memberships.find(
-      (mem) => mem.userId === ctx.session?.user?.id
-    );
-
-    if (!validMembership) {
-      throw new TRPCError({
-        code: "UNAUTHORIZED",
-        message: "Invalid Organization",
-      });
-    }
-
-    return next({
-      ctx: {
-        // infers the `session` as non-nullable
-        session: { ...ctx.session, user: ctx.session.user },
-        organization: ctx.organization,
-      },
+  if (!ctx.organizationSlug) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "No Organization Selected",
     });
   }
-);
+
+  const organization = await ctx.prisma.organization.findUnique({
+    where: {
+      slug: ctx.organizationSlug,
+    },
+    include: {
+      memberships: true,
+    },
+  });
+
+  if (!organization) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Invalid Organization",
+    });
+  }
+
+  const validMembership = organization.memberships.find(
+    (mem) => mem.userId === ctx.session?.user?.id
+  );
+
+  if (!validMembership) {
+    throw new TRPCError({
+      code: "UNAUTHORIZED",
+      message: "Invalid Organization",
+    });
+  }
+
+  return next({
+    ctx: {
+      // infers the `session` as non-nullable
+      session: { ...ctx.session, user: ctx.session.user },
+      organizationId: organization.id,
+    },
+  });
+});
 
 /**
  * Protected procedure

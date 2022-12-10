@@ -7,7 +7,7 @@ import { prisma } from "../db/client";
 
 type CreateContextOptions = {
   session: Session | null;
-  organization?: string;
+  organizationSlug?: string;
 };
 
 /** Use this helper for:
@@ -18,7 +18,8 @@ type CreateContextOptions = {
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     session: opts.session,
-    organization: opts.organization,
+    organizationSlug: opts.organizationSlug,
+    organizationId: "",
     prisma,
   };
 };
@@ -33,9 +34,12 @@ export const createContext = async (opts: CreateNextContextOptions) => {
   // Get the session from the server using the unstable_getServerSession wrapper function
   const session = await getServerAuthSession({ req, res });
 
+  console.log("create context");
+  console.log(req.headers);
+
   return await createContextInner({
     session,
-    organization: req.headers.Organization as string,
+    organizationSlug: req.headers.organization as string,
   });
 };
 
