@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "dependencies": {
-    "superjson": "1.9.1",
+    "superjson": "1.12.0",
     "trpc": "*"
   },
   "devDependencies": {
