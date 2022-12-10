@@ -1,11 +1,13 @@
 import { type NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 import { trpc } from "../../utils/trpc";
 
 const Spaces: NextPage = () => {
-  const memberships = trpc.memberships.getAll.useQuery();
+  const router = useRouter();
+  const spaces = trpc.spaces.getAll.useQuery();
   const create = trpc.spaces.create.useMutation();
 
   const onClickCreateSpace = () => {
@@ -26,10 +28,15 @@ const Spaces: NextPage = () => {
         <button onClick={onClickCreateSpace}>Create Space</button>
         <div>
           <ul>
-            {memberships.data?.map((mem) => (
+            {spaces.data?.map((space) => (
               <li>
-                <Link href={`/${mem.organization.slug}/spaces`}>
-                  {mem.organization.name}
+                <Link
+                  href={{
+                    pathname: `spaces/${space.slug}`,
+                    query: router.query,
+                  }}
+                >
+                  {space.name}
                 </Link>
               </li>
             ))}
