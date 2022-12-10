@@ -1,0 +1,24 @@
+{
+  "name": "trpc",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "dependencies": {
+    "@trpc/server": "^10.0.0",
+    "auth": "*",
+    "db": "*",
+    "next": "13.0.2",
+    "next-auth": "^4.18.3",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "superjson": "1.9.1",
+    "zod": "^3.18.0"
+  },
+  "devDependencies": {
+    "tsconfig": "*"
+  },
+  "license": "ISC"
+}
