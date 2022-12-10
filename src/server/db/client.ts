@@ -17,3 +17,21 @@ export const prisma =
 if (env.NODE_ENV !== "production") {
   global.prisma = prisma;
 }
+
+prisma.$use(async (params, next) => {
+  if (params.model == "User" && params.action == "create") {
+    params.args.data["membership"] = {
+      create: {
+        role: "member",
+        organization: {
+          create: {
+            name: "Personal",
+            slug: `personal-${Math.random().toString()}`,
+          },
+        },
+      },
+    };
+  }
+
+  return next(params);
+});
