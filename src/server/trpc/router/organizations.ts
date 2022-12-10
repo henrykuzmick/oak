@@ -1,7 +1,7 @@
-import { router, publicProcedure } from "../trpc";
+import { router, protectedProcedure } from "../trpc";
 
 export const organizationsRouter = router({
-  getAll: publicProcedure.query(async ({ ctx }) => {
+  getAll: protectedProcedure.query(async ({ ctx }) => {
     const memberships = await ctx.prisma.membership.findMany({
       where: { userId: ctx.session?.user?.id },
     });

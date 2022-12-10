@@ -23,6 +23,11 @@ export const trpc = createTRPCNext<AppRouter>({
         }),
         httpBatchLink({
           url: `${getBaseUrl()}/api/trpc`,
+          headers() {
+            return {
+              Organization: "personal-0.6638427120528752",
+            };
+          },
         }),
       ],
     };

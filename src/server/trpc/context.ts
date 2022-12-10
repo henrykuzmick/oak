@@ -7,6 +7,7 @@ import { prisma } from "../db/client";
 
 type CreateContextOptions = {
   session: Session | null;
+  organization?: string;
 };
 
 /** Use this helper for:
@@ -17,6 +18,7 @@ type CreateContextOptions = {
 export const createContextInner = async (opts: CreateContextOptions) => {
   return {
     session: opts.session,
+    organization: opts.organization,
     prisma,
   };
 };
@@ -33,6 +35,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
 
   return await createContextInner({
     session,
+    organization: req.headers.Organization as string,
   });
 };
 
