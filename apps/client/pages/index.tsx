@@ -1,13 +1,10 @@
-import { type NextPage } from "next";
+import { NextPage } from "next";
+import { api } from "api";
 import Head from "next/head";
 import Link from "next/link";
 
-import { api } from "api";
-
 const Home: NextPage = () => {
   const memberships = api.memberships.getAll.useQuery();
-
-  console.log({ memberships });
 
   return (
     <>

@@ -1,9 +1,8 @@
-import { type NextPage } from "next";
 import { useRouter } from "next/router";
+import { NextPage } from "next";
+import { api } from "api";
 import Head from "next/head";
 import Link from "next/link";
-
-import { api } from "api";
 
 const Spaces: NextPage = () => {
   const router = useRouter();
